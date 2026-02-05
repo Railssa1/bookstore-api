@@ -5,15 +5,16 @@ import bookstore.controller.request.book.BookUpdateRequest
 import bookstore.controller.request.customer.CustomerCreateRequest
 import bookstore.controller.request.customer.CustomerUpdateRequest
 import bookstore.enums.BookStatus
+import bookstore.enums.CustomerStatus
 import bookstore.model.BookModel
 import bookstore.model.CustomerModel
 
 fun CustomerCreateRequest.toCustomerModel(): CustomerModel {
-    return CustomerModel(name = this.name, email = this.email)
+    return CustomerModel(name = this.name, email = this.email, status = CustomerStatus.ATIVO)
 }
 
-fun CustomerUpdateRequest.toCustomerModel(id: Int): CustomerModel {
-    return CustomerModel(id, this.name, this.email)
+fun CustomerUpdateRequest.toCustomerModel(customer: CustomerModel): CustomerModel {
+    return CustomerModel(customer.id, this.name, this.email, status = customer.status)
 }
 
 fun BookCreateRequest.toBookModel(customer: CustomerModel): BookModel {
