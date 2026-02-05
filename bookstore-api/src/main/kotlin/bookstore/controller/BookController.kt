@@ -2,7 +2,9 @@ package bookstore.controller
 
 import bookstore.controller.request.book.BookCreateRequest
 import bookstore.controller.request.book.BookUpdateRequest
+import bookstore.controller.response.customer.BookResponse
 import bookstore.extension.toBookModel
+import bookstore.extension.toBookResponse
 import bookstore.service.BookService
 import bookstore.service.CustomerService
 import org.springframework.http.HttpStatus
@@ -22,13 +24,19 @@ class BookController(
     }
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Int) = bookService.getById(id)
+    fun getById(@PathVariable id: Int): BookResponse {
+        return bookService.getById(id).toBookResponse()
+    }
 
     @GetMapping
-    fun getAll() = bookService.getAll()
+    fun getAll(): List<BookResponse> {
+        return bookService.getAll().map { it.toBookResponse() }
+    }
 
     @GetMapping("/active")
-    fun getActive() = bookService.getActive()
+    fun getActive(): List<BookResponse> {
+        return bookService.getActive().map { it.toBookResponse() }
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

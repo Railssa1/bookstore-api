@@ -2,6 +2,7 @@ package bookstore.controller
 
 import bookstore.controller.request.customer.CustomerCreateRequest
 import bookstore.controller.request.customer.CustomerUpdateRequest
+import bookstore.controller.response.book.CustomerResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -17,19 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import bookstore.extension.toCustomerModel
+import bookstore.extension.toCustomerResponse
 
 @RestController
 @RequestMapping("/customers")
 class CustomerController(val customerService: CustomerService) {
 
     @GetMapping()
-    fun getAll(@RequestParam name: String?): List<CustomerModel> {
-        return customerService.getAll(name)
+    fun getAll(@RequestParam name: String?): List<CustomerResponse> {
+        return customerService.getAll(name).map { it.toCustomerResponse() }
     }
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Int): CustomerModel {
-        return customerService.getById(id)
+    fun getById(@PathVariable id: Int): CustomerResponse {
+        return customerService.getById(id).toCustomerResponse()
     }
 
     @PostMapping()
