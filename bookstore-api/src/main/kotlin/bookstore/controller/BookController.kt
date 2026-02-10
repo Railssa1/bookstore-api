@@ -32,7 +32,7 @@ class BookController(
     }
 
     @GetMapping
-    fun getAll(@PageableDefault(page = 0, size = 0) pageable: Pageable): Page<BookResponse> {
+    fun getAll(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
         return bookService.getAll(pageable).map { it.toBookResponse() }
     }
 

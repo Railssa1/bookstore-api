@@ -1,6 +1,8 @@
 package bookstore.service
 
 import bookstore.enums.CustomerStatus
+import bookstore.enums.Errors
+import bookstore.exception.NotFoundException
 import bookstore.model.CustomerModel
 import bookstore.repository.CustomerRepository
 import org.springframework.stereotype.Service
@@ -20,7 +22,7 @@ class CustomerService(
     }
 
     fun getById(id: Int): CustomerModel {
-        return customerRepository.findById(id).get()
+        return customerRepository.findById(id).orElseThrow({ NotFoundException(Errors.BS201.message.format(id), Errors.BS201.code)})
     }
 
     fun create(customer: CustomerModel) {

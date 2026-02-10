@@ -1,6 +1,7 @@
 package bookstore.model
 
 import bookstore.enums.BookStatus
+import bookstore.enums.Errors
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -44,7 +45,7 @@ data class BookModel(
     var status: BookStatus? = null
         set(value) {
             if(field == BookStatus.CANCELADO || field == BookStatus.DELETADO) {
-                throw Exception("Não é possível alterar um livro com status ${field}")
+                throw bookstore.exception.BadRequestException(Errors.BS102.message.format(field), Errors.BS102.code)
             }
 
             field = value

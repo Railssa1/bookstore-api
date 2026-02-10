@@ -1,12 +1,14 @@
 package bookstore.service
 
 import bookstore.enums.BookStatus
+import bookstore.enums.Errors
 import bookstore.model.BookModel
 import bookstore.model.CustomerModel
 import bookstore.repository.BookRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import bookstore.exception.NotFoundException
 
 @Service
 class BookService(
@@ -18,7 +20,7 @@ class BookService(
     }
 
     fun getById(id: Int): BookModel {
-        return bookRepository.findById(id).get()
+        return bookRepository.findById(id).orElseThrow { NotFoundException(Errors.BS101.message.format(id), Errors.BS101.code) }
     }
 
     fun getAll(pageable: Pageable): Page<BookModel> {
