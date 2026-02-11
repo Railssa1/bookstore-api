@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-import bookstore.model.CustomerModel
 import bookstore.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import bookstore.extension.toCustomerModel
 import bookstore.extension.toCustomerResponse
+import jakarta.validation.Valid
 
 @RestController
 @RequestMapping("/customers")
@@ -36,13 +36,13 @@ class CustomerController(val customerService: CustomerService) {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody customer: CustomerCreateRequest) {
+    fun create(@RequestBody @Valid customer: CustomerCreateRequest) {
         customerService.create(customer.toCustomerModel())
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun update(@PathVariable id: Int, @RequestBody customer: CustomerUpdateRequest) {
+    fun update(@PathVariable id: Int, @RequestBody @Valid customer: CustomerUpdateRequest) {
         val customerSaved = customerService.getById(id)
         customerService.update(customer.toCustomerModel(customerSaved))
     }
